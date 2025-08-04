@@ -15,13 +15,31 @@ import "./App.css"; // We'll define custom styles here
 const serverUrl = "wss://test-im1lu8qd.livekit.cloud";
 
 export default function App() {
+  const params = new URLSearchParams(window.location.search);
+  const u_code = params.get("u_code");
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const getRoomToken = async () => {
     setLoading(true);
     try {
-      const response = await fetch("https://avatar-agent.onrender.com/getToken");
+      // const response = await fetch(
+      //   "https://avatar-agent.onrender.com/getToken",
+      //   body: JSON.stringify({ u_code }),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   }
+      // );
+      const response = await fetch(
+        "https://avatar-agent.onrender.com/getToken",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ u_code }),
+        }
+      );
       const data = await response.json();
       setToken(data?.data?.room_token);
     } catch (error) {
