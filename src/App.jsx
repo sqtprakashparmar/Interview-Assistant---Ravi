@@ -91,9 +91,15 @@ function MyVideoConference() {
     { onlySubscribed: false }
   );
 
+  // ✅ Filter out 'agent-AJ_' participants unless it's Tavus avatar
+  const visibleTracks = tracks.filter((trackRef) => {
+    const identity = trackRef.participant.identity ?? "";
+    return !identity.startsWith("agent-");
+  });
+
   return (
     <GridLayout
-      tracks={tracks}
+      tracks={visibleTracks}
       style={{
         height: "calc(100vh - var(--lk-control-bar-height))",
         padding: "10px",
@@ -104,3 +110,4 @@ function MyVideoConference() {
     </GridLayout>
   );
 }
+
